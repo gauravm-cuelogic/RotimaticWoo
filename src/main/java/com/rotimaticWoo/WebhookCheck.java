@@ -1,5 +1,7 @@
 package com.rotimaticWoo;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -20,6 +22,7 @@ public class WebhookCheck {
 	By Order_Updated_Status = By.xpath("//*[@id=\"the-list\"]/tr[1]/td[2]");
 	By Order_Created_Status = By.xpath("//*[@id=\"the-list\"]/tr[3]/td[2]");
 	By StatusDropdown = By.xpath("//SPAN[@id='select2-webhook_status-container']");
+	By SelectValue = By.xpath("(//TD[@class='forminp'])[2]");
 	By getAPIText = By.xpath("//*[@id=\"mainform\"]/nav[1]/a[9]");
 	By saveWebhook = By.xpath("//INPUT[@id='publish']");
 	String currentUpdatedStatus;
@@ -62,7 +65,7 @@ public class WebhookCheck {
 	public void clickWebhooks() throws InterruptedException {
 		driver.findElement(webhooks).click();
 		((JavascriptExecutor) driver).executeScript("window.scrollTo(0,document.body.scrollHeight)");
-		Thread.sleep(2000);
+		Thread.sleep(3000);
 	}
 	
 	public void getOrderUpdatedStatus() throws InterruptedException {
@@ -77,7 +80,7 @@ public class WebhookCheck {
 	
 	public void clickOrderUpdated() throws InterruptedException {
 		driver.findElement(Order_Updated).click();
-		Thread.sleep(2000);
+		Thread.sleep(3000);
 	}
 	
 	public void clickOrderCreated() throws InterruptedException {
@@ -85,14 +88,28 @@ public class WebhookCheck {
 		Thread.sleep(2000);
 	}
 	
-	public void setOrderStatusAsActive() {
-		Select selectStatus = new Select (driver.findElement(StatusDropdown));
+	public void setOrderStatusAsActive() throws InterruptedException {
+		/*WebElement myElement = driver.findElement(StatusDropdown);
+		Select selectStatus = new Select (myElement);
 		selectStatus.selectByVisibleText("Active");
+		driver.findElement(StatusDropdown).click();
+		Thread.sleep(3000);
+		WebElement myElement = driver.findElement(StatusDropdown);
+		Select selectStatus = new Select (myElement);
+		selectStatus.selectByValue("Active");
+		/*driver.findElement(SelectValue).click();
+		Thread.sleep(3000);*/
+		
+		
+		WebElement dropdown = driver.findElement(StatusDropdown);
+		dropdown.click();
+		List<WebElement> options = dropdown.findElements(StatusDropdown);
+		options.get(1).click();
 	}
 	
 	public void clickSaveWebhook() throws InterruptedException {
 		driver.findElement(saveWebhook).click();
-		Thread.sleep(2000);
+		Thread.sleep(3000);
 	}
 		
 	public void webhookCheck(String userName, String password) throws InterruptedException {
@@ -128,7 +145,9 @@ public class WebhookCheck {
 		String disabled = "Disabled"; 
 		
 		if(currentUpdatedStatus.equals(disabled)) {
+			System.out.println("Inside 1st If..!!!");
 			this.clickOrderUpdated();
+			System.out.println("Clicked on Order Updated Link");
 			this.setOrderStatusAsActive();
 			this.clickSaveWebhook();
 			System.out.println("Order Updated Status changed as Active");
@@ -140,6 +159,7 @@ public class WebhookCheck {
 	public void testWebhookStatus2() throws InterruptedException {
 		
 		if(currentCreatedStatus=="Disabled") {
+			System.out.println("Inside 2nd If..!!!");
 			this.clickOrderCreated();
 			this.setOrderStatusAsActive();
 			this.clickSaveWebhook();
