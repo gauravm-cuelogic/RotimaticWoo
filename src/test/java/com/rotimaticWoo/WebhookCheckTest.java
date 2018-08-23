@@ -30,8 +30,8 @@ public class WebhookCheckTest {
 		
 		objectWebhookCheck = new WebhookCheck(driver);
 		objectWebhookCheck.webhookCheck(username, password);
-		objectWebhookCheck.testWebhookStatus1();
-		objectWebhookCheck.testWebhookStatus2();
+		objectWebhookCheck.testWebhookUpdatedStatus();
+		objectWebhookCheck.testWebhookCreatedStatus();
 	}
 	
 	/*@After
